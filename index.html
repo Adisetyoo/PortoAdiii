@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adi Setyo Widyanto — Personal Portfolio</title>
+    
+    <!-- Google Fonts: Sora (Heading) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration & Custom Palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#F5F7FB',
+                            bgSecondary: '#E9EEF6',
+                            primary: '#5B7CFA',
+                            secondary: '#8FA8FF',
+                            text: '#1E293B',
+                            textMuted: '#64748B',
+                            border: 'rgba(148,163,184,0.15)'
+                        }
+                    },
+                    fontFamily: {
+                        sora: ['Sora', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Premium Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F7FB;
+            color: #1E293B;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Sora', sans-serif;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            box-shadow: 0 10px 30px -10px rgba(91, 124, 250, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(91, 124, 250, 0.12);
+            border-color: rgba(91, 124, 250, 0.25);
+        }
+
+        .nav-blur {
+            background: rgba(245, 247, 251, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+        .orb-1 { background: #5B7CFA; width: 350px; height: 350px; top: -50px; left: -100px; animation: float-slow 25s infinite alternate; }
+        .orb-2 { background: #8FA8FF; width: 450px; height: 450px; bottom: 10%; right: -100px; animation: float-reverse 30s infinite alternate; }
+        .orb-3 { background: #E9EEF6; width: 300px; height: 300px; top: 40%; left: 20%; animation: float-slow 20s infinite alternate-reverse; }
+
+        @keyframes float-slow {
+            0% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(30px, 40px) scale(1.1); }
+            100% { transform: translate(-20px, -30px) scale(0.95); }
+        }
+        @keyframes float-reverse {
+            0% { transform: translate(0px, 0px) scale(1.05); }
+            50% { transform: translate(-40px, -20px) scale(0.9); }
+            100% { transform: translate(20px, 40px) scale(1.1); }
+        }
+
+        /* Scroll Reveal */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
+
+        /* Timeline Glowing Dot */
+        .timeline-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: rgba(91, 124, 250, 0.3);
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* Loading Screen */
+        #loader {
+            position: fixed; inset: 0; background: #F5F7FB; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s;
+        }
+        .loader-bar { width: 140px; height: 2px; background: rgba(91, 124, 250, 0.15); position: relative; overflow: hidden; }
+        .loader-progress { position: absolute; height: 100%; width: 50%; background: #5B7CFA; animation: loading-shimmer 1.5s infinite ease-in-out; }
+        @keyframes loading-shimmer { 0% { left: -50%; } 100% { left: 100%; } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F5F7FB; }
+        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-secondary selection:text-white">
+
+    <!-- Screen Loader -->
+    <div id="loader">
+        <div class="flex flex-col items-center gap-4">
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+        </div>
+    </div>
+
+    <!-- Background Orbs -->
+    <div class="orb orb-1 hidden md:block"></div>
+    <div class="orb orb-2 hidden md:block"></div>
+    <div class="orb orb-3 hidden md:block"></div>
+
+    <!-- Sticky Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 nav-blur transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            
+            <!-- Spacer to balance flexbox on desktop since logo is removed -->
+            <div class="hidden md:block w-32"></div>
+
+            <!-- Desktop Nav Items (Centered) -->
+            <nav class="hidden md:flex items-center gap-8 mx-auto">
+                <a href="#about" class="text-[11px] font-semibold uppercase tracking-wider text-brand-textMuted hover:text-brand-primary transition-colors">Tentang</a>
+                <a href="#galeri" class="text-[11px] font-semibold uppercase tracking-wider text-brand-textMuted hover:text-brand-primary transition-colors">Galeri</a>
+                <a href="#timeline" class="text-[11px] font-semibold uppercase tracking-wider text-brand-textMuted hover:text-brand-primary transition-colors">Prestasi</a>
+                <a href="#skills" class="text-[11px] font-semibold uppercase tracking-wider text-brand-textMuted hover:text-brand-primary transition-colors">Keahlian</a>
+                <a href="#experience" class="text-[11px] font-semibold uppercase tracking-wider text-brand-textMuted hover:text-brand-primary transition-colors">Pengalaman</a>
+                <a href="#contact" class="text-[11px] font-semibold uppercase tracking-wider text-brand-textMuted hover:text-brand-primary transition-colors">Kontak</a>
+            </nav>
+
+            <!-- CTA Header Button & Mobile Hamburger -->
+            <div class="flex items-center justify-end w-full md:w-32">
+                <a href="https://drive.google.com/file/d/1Pf3_KaNKVdQM7JJuZAAyj3zbn3KorS1g/view?usp=drivesdk" 
+                   target="_blank" 
+                   class="hidden sm:inline-flex px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-white font-medium text-[11px] uppercase tracking-wide shadow-lg shadow-blue-500/15 transition-all hover:-translate-y-0.5">
+                    Download CV
+                </a>
+                
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-brand-text hover:bg-brand-bgSecondary/60 transition-colors ml-auto">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white/98 border-b border-brand-border/60 py-6 px-6 flex flex-col gap-4 shadow-xl">
+            <a href="#about" class="mobile-nav-link text-sm font-medium text-brand-text hover:text-brand-primary py-2 block border-b border-brand-border/30">Tentang</a>
+            <a href="#galeri" class="mobile-nav-link text-sm font-medium text-brand-text hover:text-brand-primary py-2 block border-b border-brand-border/30">Galeri</a>
+            <a href="#timeline" class="mobile-nav-link text-sm font-medium text-brand-text hover:text-brand-primary py-2 block border-b border-brand-border/30">Prestasi</a>
+            <a href="#skills" class="mobile-nav-link text-sm font-medium text-brand-text hover:text-brand-primary py-2 block border-b border-brand-border/30">Keahlian</a>
+            <a href="#experience" class="mobile-nav-link text-sm font-medium text-brand-text hover:text-brand-primary py-2 block border-b border-brand-border/30">Pengalaman</a>
+            <a href="#contact" class="mobile-nav-link text-sm font-medium text-brand-text hover:text-brand-primary py-2 block border-b border-brand-border/30">Kontak</a>
+            <a href="https://drive.google.com/file/d/1Pf3_KaNKVdQM7JJuZAAyj3zbn3KorS1g/view?usp=drivesdk" 
+               target="_blank" 
+               class="inline-flex justify-center items-center py-3.5 rounded-xl bg-brand-primary text-white font-medium text-sm tracking-wide mt-2 shadow-lg shadow-blue-500/20">
+                Download CV
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
+
+        <!-- 1. HERO SECTION -->
+        <section id="hero" class="min-h-[85vh] flex items-center justify-center mb-16 sm:mb-28">
+            <div class="w-full glass-card rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-12 lg:p-16 relative overflow-hidden flex flex-col-reverse lg:flex-row items-center justify-between gap-10 sm:gap-16 border border-white/60">
+                
+                <!-- Left Content -->
+                <div class="w-full lg:w-3/5 space-y-6 sm:space-y-8 text-center lg:text-left relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/15">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
+                        <span class="text-[10px] font-semibold tracking-wider uppercase font-sora">OSC Scholar & Innovator</span>
+                    </div>
+
+                    <div class="space-y-3 sm:space-y-4">
+                        <h2 class="text-brand-textMuted font-heading font-medium tracking-wide text-sm sm:text-base">Halo, saya</h2>
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-brand-text tracking-tight leading-tight">
+                            Adi Setyo Widyanto
+                        </h1>
+                        <p class="text-[13px] sm:text-base font-semibold text-brand-primary/95 font-heading">
+                            Accounting Student • Business Enthusiast • Canva Designer
+                        </p>
+                    </div>
+
+                    <p class="text-brand-textMuted font-inter text-sm sm:text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        "Building Ideas, Leading Innovation, and Turning Achievements into Impact."
+                    </p>
+
+                    <!-- Buttons & Social Links -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="https://drive.google.com/file/d/1Pf3_KaNKVdQM7JJuZAAyj3zbn3KorS1g/view?usp=drivesdk" 
+                           target="_blank" 
+                           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-brand-primary hover:bg-brand-primary/95 text-white font-heading font-semibold text-sm tracking-wide shadow-xl shadow-blue-500/15 hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-300">
+                            Download CV
+                            <svg class="w-4 h-4 stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        </a>
+                        
+                        <div class="flex items-center justify-center gap-3 w-full sm:w-auto">
+                            <!-- LinkedIn SVG -->
+                            <a href="https://www.linkedin.com/in/adi-setyo-widyanto-36565530b?utm_source=share_via&utm_content=profile&utm_medium=member_android" 
+                               target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-brand-border flex items-center justify-center text-brand-textMuted hover:text-[#0A66C2] hover:border-[#0A66C2]/35 shadow-sm transition-all hover:-translate-y-0.5">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                            </a>
+                            <!-- Instagram SVG -->
+                            <a href="https://www.instagram.com/aadisetyo_?igsh=MXg0c3Fmc2l2cW9kMQ==" 
+                               target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-brand-border flex items-center justify-center text-brand-textMuted hover:text-[#E1306C] hover:border-[#E1306C]/35 shadow-sm transition-all hover:-translate-y-0.5">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m12.4 2.25a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Profile Photo -->
+                <div class="w-full lg:w-2/5 flex justify-center lg:justify-end relative">
+                    <div class="relative w-56 h-72 sm:w-72 sm:h-80 md:w-80 md:h-[22rem] rounded-3xl overflow-hidden shadow-2xl border-[6px] border-white group">
+                        
+                        <!-- 👇 UBAH FOTO PROFIL DI SINI 👇 -->
+                        <!-- Pastikan nama file di dalam src="..." sama persis dengan yang di-upload ke GitHub -->
+                        <img src="adiprofil.jpeg" alt="Foto Profil Adi Setyo W." class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 bg-brand-bgSecondary">
+                        <!-- 👆 SELESAI UBAH FOTO 👆 -->
+
+                        <!-- Tag Nama Overlay di dalam foto -->
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 pt-12 pointer-events-none">
+                            <h3 class="text-white font-heading font-semibold text-sm sm:text-base">Adi Setyo W.</h3>
+                            <p class="text-white/80 text-[10px] sm:text-xs">Universitas Ciputra Surabaya</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-4 -left-2 sm:-bottom-6 sm:-left-4 glass-card p-3 sm:p-4 rounded-2xl flex items-center gap-3 shadow-lg animate-bounce" style="animation-duration: 6s;">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                            <!-- Clean Trophy SVG instead of Emoji -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5.5c0 2.5-2 4.5-5 4.5s-5-2-5-4.5V4z"/><path d="M7 6H4v2.5C4 10.5 5.5 12 7 12M17 6h3v2.5c0 2 1.5 3.5 3 3.5"/></svg>
+                        </div>
+                        <div class="leading-tight">
+                            <p class="font-heading font-bold text-xs sm:text-sm text-brand-text">1st Winner</p>
+                            <p class="text-[9px] sm:text-[10px] text-brand-textMuted font-semibold">Univ. Indonesia 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT ME SECTION -->
+        <section id="about" class="reveal-up py-12 sm:py-20 border-t border-brand-border/40">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 space-y-3 px-4">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary font-heading">Siapa Saya</span>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-brand-text">Profil Singkat</h2>
+                <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-8 px-4 sm:px-6">
+                <div class="space-y-6 text-center sm:text-left">
+                    <p class="text-brand-text font-inter text-sm sm:text-base md:text-lg leading-relaxed font-light">
+                        Saya adalah lulusan <strong>SMA Negeri 2 Tuban</strong> jurusan SOSHUM yang diterima di <strong>Universitas Ciputra Surabaya</strong> program studi Accounting melalui jalur beasiswa OSC. Saya memiliki minat besar pada bidang bisnis, ekonomi, dan akuntansi serta aktif mengikuti berbagai kompetisi tingkat nasional. 
+                    </p>
+                    <p class="text-brand-text font-inter text-sm sm:text-base md:text-lg leading-relaxed font-light">
+                        Hingga saat ini, saya berhasil meraih <strong>30 piagam juara</strong> dari berbagai universitas di Indonesia dalam bidang business plan, desain infografis, essay, olimpiade, dan cerdas cermat. Salah satu pencapaian yang paling membanggakan adalah meraih <strong>Juara 1 lomba Business Plan tingkat nasional</strong> yang diselenggarakan oleh <strong>Universitas Indonesia</strong> pada bulan Oktober tahun 2025. Saya memiliki kemampuan bekerja sama dalam tim, komunikasi yang baik, serta ketertarikan untuk terus mengembangkan pengalaman dan tantangan baru di dunia akademik.
+                    </p>
+                </div>
+
+                <!-- Statistik Modern Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
+                    <div class="p-5 bg-white/60 border border-brand-border rounded-2xl text-center shadow-sm">
+                        <span class="block text-2xl sm:text-3xl font-heading font-extrabold text-brand-primary counter" data-target="30">0</span>
+                        <span class="text-[10px] sm:text-xs font-semibold text-brand-textMuted uppercase tracking-wide mt-2 block">National Awards</span>
+                    </div>
+                    <div class="p-5 bg-white/60 border border-brand-border rounded-2xl text-center shadow-sm">
+                        <span class="block text-2xl sm:text-3xl font-heading font-extrabold text-brand-primary counter" data-target="12">0</span>
+                        <span class="text-[10px] sm:text-xs font-semibold text-brand-textMuted uppercase tracking-wide mt-2 block">Business Wins</span>
+                    </div>
+                    <div class="p-5 bg-white/60 border border-brand-border rounded-2xl text-center shadow-sm">
+                        <span class="block text-2xl sm:text-3xl font-heading font-extrabold text-brand-primary counter" data-target="4">0</span>
+                        <span class="text-[10px] sm:text-xs font-semibold text-brand-textMuted uppercase tracking-wide mt-2 block">Finalis Awards</span>
+                    </div>
+                    <div class="p-5 bg-white/60 border border-brand-border rounded-2xl text-center shadow-sm flex flex-col justify-center">
+                        <span class="block text-sm sm:text-base font-heading font-extrabold text-brand-primary py-1">OSC</span>
+                        <span class="text-[10px] sm:text-xs font-semibold text-brand-textMuted uppercase tracking-wide mt-1 block">Scholar Awardee</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. GALERI SECTION (HANYA FOTO LANDSCAPE) -->
+        <section id="galeri" class="reveal-up py-12 sm:py-20 border-t border-brand-border/40">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 space-y-3 px-4">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary font-heading">Dokumentasi</span>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-brand-text">Galeri Kegiatan</h2>
+                <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <!-- Grid 4 Foto (1 kolom di HP, 2 kolom di Laptop) -->
+                <!-- aspect-video memastikan semua kotak bentuknya landscape seragam -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    
+                    <!-- Foto Lomba 1 -->
+                    <div class="rounded-2xl overflow-hidden glass-card aspect-video border-4 border-white shadow-sm group">
+                        <!-- 👇 GANTI NAMA FILE FOTO LOMBA 1 👇 -->
+                        <img src="adilomba1.jpeg" alt="Dokumentasi 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-bgSecondary">
+                    </div>
+
+                    <!-- Foto Lomba 2 -->
+                    <div class="rounded-2xl overflow-hidden glass-card aspect-video border-4 border-white shadow-sm group">
+                        <!-- 👇 GANTI NAMA FILE FOTO LOMBA 2 👇 -->
+                        <img src="adilomba2.jpeg" alt="Dokumentasi 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-bgSecondary">
+                    </div>
+
+                    <!-- Foto Lomba 3 -->
+                    <div class="rounded-2xl overflow-hidden glass-card aspect-video border-4 border-white shadow-sm group">
+                        <!-- 👇 GANTI NAMA FILE FOTO LOMBA 3 👇 -->
+                        <img src="adilomba3.jpeg" alt="Dokumentasi 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-bgSecondary">
+                    </div>
+
+                    <!-- Foto Lomba 4 -->
+                    <div class="rounded-2xl overflow-hidden glass-card aspect-video border-4 border-white shadow-sm group">
+                        <!-- 👇 GANTI NAMA FILE FOTO LOMBA 4 👇 -->
+                        <img src="adilomba4.jpeg" alt="Dokumentasi 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-bgSecondary">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ACHIEVEMENT TIMELINE SECTION -->
+        <section id="timeline" class="reveal-up py-12 sm:py-20 border-t border-brand-border/40">
+            <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3 px-4">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary font-heading">Rekam Jejak</span>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-brand-text">Timeline Prestasi Nasional</h2>
+                <p class="text-xs sm:text-sm text-brand-textMuted max-w-lg mx-auto">Riwayat kemenangan kompetisi bergengsi tingkat nasional di Indonesia.</p>
+                <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            </div>
+
+            <!-- UI Timeline Wrapper -->
+            <div class="relative max-w-4xl mx-auto px-4 sm:px-6">
+                <!-- Vertical Center Line (Kiri di Mobile, Tengah di Desktop) -->
+                <div class="absolute left-6 sm:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-primary via-brand-secondary to-transparent sm:-translate-x-1/2"></div>
+
+                <!-- BLOCK A: BUSINESS PLAN & OLYMPIAD -->
+                <div class="relative mb-16">
+                    <div class="flex items-center sm:justify-center mb-10 relative z-10 pl-12 sm:pl-0">
+                        <div class="bg-brand-primary text-white text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-lg shadow-blue-500/10">
+                            Desember 2024 – Sekarang
+                        </div>
+                    </div>
+
+                    <!-- HIGHLIGHT KHUSUS (UI 1st Winner) -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-8">
+                        <div class="absolute left-6 sm:left-1/2 w-4 h-4 rounded-full bg-amber-500 timeline-dot -translate-x-1/2 z-20 sm:self-center top-6 sm:top-auto"></div>
+                        
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-5 sm:p-6 rounded-2xl border-2 border-amber-400/50 bg-amber-500/[0.03]">
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                                    <span class="text-[9px] sm:text-[10px] font-bold text-amber-600 uppercase tracking-wider bg-amber-500/10 px-2 py-1 rounded font-sora">Highlight Khusus</span>
+                                </div>
+                                <h3 class="font-heading font-bold text-brand-text text-sm sm:text-base leading-snug">1st Winner Business Plan</h3>
+                                <p class="text-xs text-amber-700 font-semibold mt-1">Vorment 15th Universitas Indonesia</p>
+                                <p class="text-[10px] sm:text-[11px] text-brand-textMuted mt-2 leading-relaxed">Meraih posisi teratas pada kompetisi Business Plan prestisius di Indonesia yang diadakan oleh Universitas Indonesia.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Prestasi Normal Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">1st Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">Preneurs STIA LAN Jakarta</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Item Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">1st Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">ISLAMICOM HIMA EKSYA UAC</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Model Canvas</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">1st Winner BMC Competition</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">Universitas Bojonegoro</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">IE-BIZCOMP Universitas Bojonegoro</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">DECO Universitas 17 Agustus 1945 SBY</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">ISME Univ. Internasional Semen Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">Mantion Universitas Dinamika Surabaya</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">3rd Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">HIPMI FEST STIE Mahardhika</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Business Plan</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">4th Winner Business Plan</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">INDO UII BAC Universitas Islam Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Olympiad</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">Silver Medal — OSA</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">Universitas Airlangga</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOCK B: POSTER & INFOGRAPHIC -->
+                <div class="relative">
+                    <div class="flex items-center sm:justify-center mb-10 relative z-10 pl-12 sm:pl-0">
+                        <div class="bg-brand-primary text-white text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-lg shadow-blue-500/10">
+                            Mei 2024 – September 2024
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Poster</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">1st Poster Competition</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">HISTORY FAIR Universitas Jambi</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Poster</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">1st Poster Competition</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">SRF Universitas Pendidikan Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Infographic</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Infographic Competition</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">INVERS Universitas Udayana</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+
+                    <!-- Kanan -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8 mb-6">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Infographic</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Infographic Competition</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">UI DIGITALTALK Univ. Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kiri -->
+                    <div class="relative flex flex-col sm:flex-row items-stretch gap-4 sm:gap-8">
+                        <div class="absolute left-6 sm:left-1/2 w-3.5 h-3.5 rounded-full bg-brand-primary timeline-dot -translate-x-1/2 z-20 top-6 sm:top-auto sm:self-center"></div>
+                        <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                                <span class="text-[9px] font-bold text-brand-primary uppercase tracking-wider font-sora">Poster</span>
+                                <h3 class="font-heading font-bold text-brand-text text-xs sm:text-sm mt-1 leading-snug">2nd Poster Competition</h3>
+                                <p class="text-[11px] text-brand-textMuted mt-1">PSYCHOART Universitas Negeri Surabaya</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block sm:w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SKILLS SECTION -->
+        <section id="skills" class="reveal-up py-12 sm:py-20 border-t border-brand-border/40">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 space-y-3 px-4">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary font-heading">Keahlian</span>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-brand-text">Kompetensi Profesional</h2>
+                <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Responsive Grid for Skills (2 cols mobile, 3/4 cols desktop) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto px-4 sm:px-6">
+                
+                <!-- Business Planning -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Business Planning</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Pitch & Model Expert</p>
+                    </div>
+                </div>
+
+                <!-- Leadership -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Leadership</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Team Management</p>
+                    </div>
+                </div>
+
+                <!-- Public Speaking -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Public Speaking</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Presentation Elite</p>
+                    </div>
+                </div>
+
+                <!-- Canva Design -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Canva Design</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Graphic Infographics</p>
+                    </div>
+                </div>
+
+                <!-- UI Design -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">UI Design</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Modern Interfaces</p>
+                    </div>
+                </div>
+
+                <!-- Presentation Skill -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Presentation</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Impactful Deck Design</p>
+                    </div>
+                </div>
+
+                <!-- Microsoft Office -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Ms. Office</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Excel & Word Expert</p>
+                    </div>
+                </div>
+
+                <!-- Team Collaboration -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Team Collab</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Cross-functional Work</p>
+                    </div>
+                </div>
+
+                <!-- Communication -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Communication</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Clear & Constructive</p>
+                    </div>
+                </div>
+
+                <!-- Problem Solving -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Problem Solving</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Analytical Thinking</p>
+                    </div>
+                </div>
+
+                <!-- Creative Thinking -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36 col-span-2 md:col-span-1 lg:col-span-2">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-brand-text text-xs sm:text-sm group-hover:text-brand-primary transition-colors">Creative Thinking</h4>
+                        <p class="text-[9px] sm:text-[10px] text-brand-textMuted mt-0.5">Out-of-the-box Strategy</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. EXPERIENCE SECTION -->
+        <section id="experience" class="reveal-up py-12 sm:py-20 border-t border-brand-border/40">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 space-y-3 px-4">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary font-heading">Pengalaman</span>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-brand-text">Aktivitas Kepemimpinan</h2>
+                <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Experience Premium Layout (1 col mobile, 3 col desktop) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12 px-4 sm:px-6">
+                
+                <!-- Card 1 -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between min-h-[16rem]">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="font-heading font-bold text-base sm:text-lg text-brand-text leading-snug">Active National Participant</h3>
+                        <p class="text-[11px] sm:text-xs text-brand-textMuted leading-relaxed">Secara konstan mengikuti dan memetakan tren persaingan akademik dan bisnis di berbagai perguruan tinggi nasional terbaik.</p>
+                    </div>
+                    <div class="text-[9px] font-bold text-brand-primary tracking-wider uppercase font-sora pt-4 mt-4 border-t border-brand-border">
+                        Continuous Learner
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between min-h-[16rem]">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        </div>
+                        <h3 class="font-heading font-bold text-base sm:text-lg text-brand-text leading-snug">Team Leader in Business Plan</h3>
+                        <p class="text-[11px] sm:text-xs text-brand-textMuted leading-relaxed">Memimpin tim merumuskan analisis model bisnis, kelayakan finansial, presentasi, dan eksekusi konsep bisnis inovatif.</p>
+                    </div>
+                    <div class="text-[9px] font-bold text-brand-primary tracking-wider uppercase font-sora pt-4 mt-4 border-t border-brand-border">
+                        Strategic Leader
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between min-h-[16rem]">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        </div>
+                        <h3 class="font-heading font-bold text-base sm:text-lg text-brand-text leading-snug">12× Winner Business Plan</h3>
+                        <p class="text-[11px] sm:text-xs text-brand-textMuted leading-relaxed">Berhasil mengamankan podium juara pertama, kedua, dan ketiga dalam rangkaian kompetisi rencana bisnis nasional.</p>
+                    </div>
+                    <div class="text-[9px] font-bold text-brand-primary tracking-wider uppercase font-sora pt-4 mt-4 border-t border-brand-border">
+                        Proven Track Record
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lower Call to Action -->
+            <div class="glass-card p-6 sm:p-10 rounded-[2rem] max-w-3xl mx-auto text-center space-y-5 sm:space-y-6 mx-4 sm:mx-auto border border-brand-primary/10">
+                <h3 class="font-heading font-bold text-base sm:text-xl text-brand-text px-2">Tertarik Mengetahui Pengalaman Lebih Lanjut?</h3>
+                <p class="text-[11px] sm:text-sm text-brand-textMuted max-w-lg mx-auto">Anda dapat mengunduh salinan berkas Curriculum Vitae (CV) lengkap saya yang mencakup ringkasan akademis serta portofolio kompetisi.</p>
+                <a href="https://drive.google.com/file/d/1Pf3_KaNKVdQM7JJuZAAyj3zbn3KorS1g/view?usp=drivesdk" 
+                   target="_blank" 
+                   class="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl bg-brand-primary hover:bg-brand-primary/95 text-white font-heading font-semibold text-[10px] sm:text-xs tracking-wider uppercase shadow-lg shadow-blue-500/10 transition-all hover:-translate-y-0.5">
+                    Download CV Resmi
+                </a>
+            </div>
+        </section>
+
+        <!-- 7. CONTACT SECTION -->
+        <section id="contact" class="reveal-up py-12 sm:py-20 border-t border-brand-border/40">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 space-y-3 px-4">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary font-heading">Hubungi Saya</span>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-brand-text">Mulai Kolaborasi</h2>
+                <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto px-4 sm:px-6">
+                
+                <!-- Email -->
+                <a href="mailto:setyoa604@gmail.com" class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-heading font-bold text-xs sm:text-sm text-brand-text group-hover:text-brand-primary transition-colors">E-mail</h4>
+                        <p class="text-[10px] sm:text-[11px] text-brand-textMuted mt-1 overflow-hidden text-ellipsis">setyoa604@gmail.com</p>
+                    </div>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/aadisetyo_?igsh=MXg0c3Fmc2l2cW9kMQ==" target="_blank" class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m12.4 2.25a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-heading font-bold text-xs sm:text-sm text-brand-text group-hover:text-brand-primary transition-colors">Instagram</h4>
+                        <p class="text-[10px] sm:text-[11px] text-brand-textMuted mt-1">@aadisetyo_</p>
+                    </div>
+                </a>
+
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/adi-setyo-widyanto-36565530b?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-heading font-bold text-xs sm:text-sm text-brand-text group-hover:text-brand-primary transition-colors">LinkedIn</h4>
+                        <p class="text-[10px] sm:text-[11px] text-brand-textMuted mt-1">Adi Setyo Widyanto</p>
+                    </div>
+                </a>
+
+                <!-- Location -->
+                <div class="glass-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between group h-32 sm:h-36">
+                    <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                        <svg class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-heading font-bold text-xs sm:text-sm text-brand-text group-hover:text-brand-primary transition-colors">Domisili</h4>
+                        <p class="text-[10px] sm:text-[11px] text-brand-textMuted mt-1">Tuban, Indonesia</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 8. FOOTER SECTION -->
+    <footer class="relative mt-10 border-t border-brand-border/40 py-8 sm:py-10 bg-white/40">
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-primary to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <span class="text-[11px] sm:text-xs text-brand-textMuted">
+                Designed & Built by <strong class="text-brand-text">Adi Setyo Widyanto</strong> © 2026
+            </span>
+            <span class="text-[9px] sm:text-[10px] text-brand-textMuted tracking-wider uppercase font-semibold">
+                Universitas Ciputra Surabaya
+            </span>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Loading animation
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                reveal();
+            }, 500);
+        });
+
+        // Mobile Menu Toggling
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconPath = document.getElementById('menu-icon-path');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIconPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            } else {
+                menuIconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            }
+        });
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIconPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            });
+        });
+
+        // Scroll Reveal
+        const reveal = () => {
+            const reveals = document.querySelectorAll('.reveal-up');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) reveals[i].classList.add('active');
+            }
+        };
+        window.addEventListener('scroll', reveal);
+
+        // Counter Animation
+        const startCounters = () => {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / 50; // Speed
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 25);
+                    } else {
+                        counter.innerText = target + "+";
+                    }
+                };
+                updateCount();
+            });
+        };
+
+        // Trigger Counter
+        let counterTriggered = false;
+        window.addEventListener('scroll', () => {
+            const aboutSection = document.getElementById('about');
+            if (!aboutSection) return;
+            const rect = aboutSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight && !counterTriggered) {
+                startCounters();
+                counterTriggered = true;
+            }
+        });
+    </script>
+</body>
+</html>
